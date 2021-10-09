@@ -45,8 +45,6 @@ public class Register extends AppCompatActivity {
             intent.putExtra("email", "");
             startActivity(intent);
             finish();
-        } else {
-            Toast.makeText(this, "Register a new account", Toast.LENGTH_SHORT).show();
         }
 
         registerBtn.setOnClickListener(new View.OnClickListener() {

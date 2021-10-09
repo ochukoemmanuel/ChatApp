@@ -10,11 +10,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-public class MemoryData {
+public final class MemoryData {
 
     public static void saveData(String data, Context context){
         try {
-            FileOutputStream fileOutputStream = context.openFileOutput("data.txt", Context.MODE_PRIVATE);
+            FileOutputStream fileOutputStream = context.openFileOutput("datata.txt", Context.MODE_PRIVATE);
             fileOutputStream.write(data.getBytes());
             fileOutputStream.close();
         } catch (IOException e){
@@ -24,7 +24,7 @@ public class MemoryData {
 
     public static void saveName(String data, Context context){
         try {
-            FileOutputStream fileOutputStream = context.openFileOutput("name_.txt", Context.MODE_PRIVATE);
+            FileOutputStream fileOutputStream = context.openFileOutput("nameee.txt", Context.MODE_PRIVATE);
             fileOutputStream.write(data.getBytes());
             fileOutputStream.close();
         } catch (IOException e){
@@ -55,7 +55,7 @@ public class MemoryData {
     public static String getName(Context context){
         String data = "";
         try {
-            FileInputStream fis = context.openFileInput("name_.txt");
+            FileInputStream fis = context.openFileInput("nameee.txt");
             InputStreamReader isr = new InputStreamReader(fis);
             BufferedReader bufferedReader = new BufferedReader(isr);
             StringBuilder sb = new StringBuilder();

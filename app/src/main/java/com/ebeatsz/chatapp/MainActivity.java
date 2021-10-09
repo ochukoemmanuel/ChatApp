@@ -68,6 +68,23 @@ public class MainActivity extends AppCompatActivity {
                 progressDialog.dismiss();
             }
         });
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    final String getMobile = dataSnapshot.getKey();
+                    if (!getMobile.equals(mobile)){
+                        final String getName = dataSnapshot.child("name");
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        })
     }
 
     private void notifyDbChange(){
