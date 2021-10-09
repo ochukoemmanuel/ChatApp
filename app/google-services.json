@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "550505814280",
+    "project_id": "chatapp-96c49",
+    "storage_bucket": "chatapp-96c49.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:550505814280:android:7a8a417fded2d1465634bd",
+        "android_client_info": {
+          "package_name": "com.ebeatsz.chatapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "550505814280-5n8ao3jk8vd3302sifqsrssqgrfk3f9q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmRdD8vAdI3t-q7FkQhL1KmYI6UuEAmic"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "550505814280-5n8ao3jk8vd3302sifqsrssqgrfk3f9q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
