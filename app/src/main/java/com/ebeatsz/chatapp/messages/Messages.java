@@ -1,14 +1,14 @@
 package com.ebeatsz.chatapp.messages;
 
 public class Messages {
-    private String name, email, lastMessage, profilepic;
+    private String name, email, lastMessage, profile_pic;
     private int unseenMessages;
 
-    public Messages(String name, String email, String lastMessage, String profilepic, int unseenMessages) {
+    public Messages(String name, String email, String lastMessage, String profile_pic, int unseenMessages) {
         this.name = name;
         this.email = email;
         this.lastMessage = lastMessage;
-        this.profilepic = profilepic;
+        this.profile_pic = profile_pic;
         this.unseenMessages = unseenMessages;
     }
 
@@ -36,12 +36,12 @@ public class Messages {
         this.lastMessage = lastMessage;
     }
 
-    public String getProfilepic() {
-        return profilepic;
+    public String getProfile_pic() {
+        return profile_pic;
     }
 
-    public void setProfilepic(String profilepic) {
-        this.profilepic = profilepic;
+    public void setProfile_pic(String profilepic) {
+        this.profile_pic = profile_pic;
     }
 
     public int getUnseenMessages() {
