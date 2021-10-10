@@ -40,7 +40,7 @@ public class Messages {
         return profile_pic;
     }
 
-    public void setProfile_pic(String profilepic) {
+    public void setProfile_pic(String profile_pic) {
         this.profile_pic = profile_pic;
     }
 

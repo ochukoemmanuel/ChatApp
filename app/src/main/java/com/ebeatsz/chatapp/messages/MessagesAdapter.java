@@ -1,16 +1,19 @@
 package com.ebeatsz.chatapp.messages;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ebeatsz.chatapp.R;
+import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
@@ -36,7 +39,23 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MyView
 
     @Override
     public void onBindViewHolder(@NonNull MessagesAdapter.MyViewHolder holder, int position) {
+        Messages list2 = messagesList.get(position);
 
+        if (!list2.getProfile_pic().isEmpty()){
+            Picasso.get().load(list2.getProfile_pic()).into(holder.profilePic);
+        }
+
+        holder.name.setText(list2.getName());
+        holder.lastMessages.setText(list2.getLastMessage());
+
+        if (list2.getUnseenMessages() == 0){
+            holder.unSeenMessages.setVisibility(View.GONE);
+            holder.lastMessages.setTextColor(Color.parseColor("#959595"));
+        } else {
+            holder.unSeenMessages.setVisibility(View.VISIBLE);
+            holder.unSeenMessages.setText(list2.getUnseenMessages() + "");
+            holder.lastMessages.setTextColor(context.getResources().getColor(R.color.theme_color_8));
+        }
     }
 
     @Override
@@ -45,10 +64,10 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MyView
     }
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
-        private CircleImageView profilePic;
-        private TextView name;
-        private TextView lastMessages;
-        private TextView unSeenMessages;
+        private final CircleImageView profilePic;
+        private final TextView name;
+        private final TextView lastMessages;
+        private final TextView unSeenMessages;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
