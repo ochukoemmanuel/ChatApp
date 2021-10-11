@@ -33,8 +33,12 @@ public class MainActivity extends AppCompatActivity {
     CircleImageView user_profile_pic;
     private int unseenMessage = 0;
     private String lastMessage = "";
+    private String chatKey = "";
 
-    RecyclerView messagesRecyclerView;
+    private boolean dataSet = false;
+
+    private RecyclerView messagesRecyclerView;
+    private MessagesAdapter messagesAdapter;
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://chatapp-96c49-default-rtdb.firebaseio.com/");
 
     @Override
@@ -42,14 +46,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        messagesRecyclerView = findViewById(R.id.messagesRecyclerView);
         // Get intent data from Register.class
         name = getIntent().getStringExtra("name");
         email = getIntent().getStringExtra("email");
         mobile = getIntent().getStringExtra("mobile");
 
-        messagesRecyclerView = findViewById(R.id.messagesRecyclerView);
         messagesRecyclerView.setHasFixedSize(true);
         messagesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        messagesAdapter = new MessagesAdapter(messagesList, MainActivity.this);
+        messagesRecyclerView.setAdapter(messagesAdapter);
 
         user_profile_pic = findViewById(R.id.user_profile_pic);
         ProgressDialog progressDialog = new ProgressDialog(this);
@@ -63,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 final String profilePicUrl = snapshot.child("users").child(mobile).child("profile_pic").getValue(String.class);
 
-                notifyDbChange();
+//                notifyDbChange();
 
                 if (!profilePicUrl.isEmpty()) {
                     Picasso.get().load(profilePicUrl).into(user_profile_pic);
@@ -85,8 +91,13 @@ public class MainActivity extends AppCompatActivity {
                 messagesList.clear();
                 unseenMessage = 0;
                 lastMessage = "";
+                chatKey = "";
+
                 for (DataSnapshot dataSnapshot : snapshot.child("users").getChildren()) {
+
                     final String getMobile = dataSnapshot.getKey();
+
+                    dataSet = false;
                     if (!getMobile.equals(mobile)) {
                         final String getName = dataSnapshot.child("name").getValue(String.class);
                         final String getProfilePic = dataSnapshot.child("profile_pic").getValue(String.class);
@@ -99,26 +110,34 @@ public class MainActivity extends AppCompatActivity {
                                 if (getChatCount > 0) {
                                     for (DataSnapshot dataSnapshot1 : snapshot.getChildren()) {
                                         final String getKey = dataSnapshot1.getKey();
-                                        final String getUserOne = dataSnapshot1.child("user_1").getValue(String.class);
-                                        final String getUsertwo = dataSnapshot1.child("user_2").getValue(String.class);
+                                        chatKey = getKey;
 
-                                        if ((getUserOne.equals(getMobile) && getUsertwo.equals(mobile)) || (getUserOne.equals(mobile) && getUsertwo.equals(getMobile))) {
-                                            for (DataSnapshot chatDataSnapshot : dataSnapshot.child("messages").getChildren()) {
-                                                final long getMessageKey = chatDataSnapshot.getKey();
-                                                final long getLastSeenMessage = Long.parseLong(MemoryData.getLastMsgTS(MainActivity.this, getKey));
+                                        if (dataSnapshot.hasChild("user_1") && dataSnapshot.hasChild("user_2") && dataSnapshot.hasChild("message")){
+                                            final String getUserOne = dataSnapshot1.child("user_1").getValue(String.class);
+                                            final String getUserTwo = dataSnapshot1.child("user_2").getValue(String.class);
 
-                                                lastMessage = chatDataSnapshot.child("msg").getValue(String.class);
-                                                if (getMessageKey > getLastSeenMessage) {
-                                                    unseenMessage++;
+                                            if ((getUserOne.equals(getMobile) && getUserTwo.equals(mobile)) || (getUserOne.equals(mobile) && getUserTwo.equals(getMobile))) {
+                                                for (DataSnapshot chatDataSnapshot : dataSnapshot.child("messages").getChildren()) {
+                                                    final long getMessageKey = Long.parseLong(chatDataSnapshot.getKey());
+                                                    final long getLastSeenMessage = Long.parseLong(MemoryData.getLastMsgTS(MainActivity.this, getKey));
+
+                                                    lastMessage = chatDataSnapshot.child("msg").getValue(String.class);
+                                                    if (getMessageKey > getLastSeenMessage) {
+                                                        unseenMessage++;
+                                                    }
                                                 }
                                             }
                                         }
+
                                     }
                                 }
 
-                                Messages messages = new Messages(getName, getMobile, "", getProfilePic, 0);
-                                messagesList.add(messages);
-                                messagesRecyclerView.setAdapter(new MessagesAdapter(messagesList, MainActivity.this));
+                                if (!dataSet){
+                                    dataSet = true;
+                                    Messages messages = new Messages(getName, getMobile, lastMessage, getProfilePic, unseenMessage, chatKey);
+                                    messagesList.add(messages);
+                                    messagesAdapter.updateData(messagesList);
+                                }
                             }
 
                             @Override

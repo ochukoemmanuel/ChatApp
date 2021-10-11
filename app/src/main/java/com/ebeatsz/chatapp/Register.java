@@ -17,6 +17,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 public class Register extends AppCompatActivity {
 
@@ -37,15 +38,18 @@ public class Register extends AppCompatActivity {
         progressDialog.setCancelable(false);
         progressDialog.setMessage("Loading... relax your mind");
 
-        if(!MemoryData.getData(this).isEmpty()){
-            Toast.makeText(this, "Already Logged in", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(Register.this, MainActivity.class);
-            intent.putExtra("mobile", MemoryData.getData(this));
-            intent.putExtra("name", MemoryData.getName(this));
-            intent.putExtra("email", "");
-            startActivity(intent);
-            finish();
-        }
+        //////////////////////////////////////////////////////////////
+                if(!MemoryData.getData(Register.this).isEmpty()){
+                    Toast.makeText(Register.this, MemoryData.getData(Register.this), Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(Register.this, MainActivity.class);
+                    intent.putExtra("mobile", MemoryData.getData(Register.this));
+                    intent.putExtra("name", MemoryData.getName(Register.this));
+                    intent.putExtra("email", "");
+                    startActivity(intent);
+                    finish();
+                }
+
+        /////////////////////////////////////////////////////////
 
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
